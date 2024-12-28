@@ -7,7 +7,8 @@ import random
 
 
 # もっと最適化する
-def reverse_stone(x, y, board, player_stone, enemy_stone):
+def find_flippable_stones(x, y, board, player_stone, enemy_stone):
+    flippable_stones_all_directions = []
     directions = [
         (0, 1),
         (0, -1),
@@ -29,38 +30,24 @@ def reverse_stone(x, y, board, player_stone, enemy_stone):
             ny += y_add
 
         if 0 <= nx < 8 and 0 <= ny < 8 and board[nx][ny] == player_stone:
-            for x_flip, y_flip in flip_stones:
-                board[x_flip][y_flip] = player_stone
+            flippable_stones_all_directions.append(flip_stones)
+    return flippable_stones_all_directions
+
+
+def reverse_stone(x, y, board, player_stone, enemy_stone):
+    flippable_stones_all_directions = find_flippable_stones(
+        x, y, board, player_stone, enemy_stone
+    )
+    for flip_stones in flippable_stones_all_directions:
+        for x_flip, y_flip in flip_stones:
+            board[x_flip][y_flip] = player_stone
 
 
 def reverse_stone_exist(x, y, board, player_stone, enemy_stone):
-    directions = [
-        (0, 1),
-        (0, -1),
-        (1, 0),
-        (-1, 0),
-        (1, 1),
-        (1, -1),
-        (-1, 1),
-        (-1, -1),
-    ]
-    for x_add, y_add in directions:
-        nx = x + x_add
-        ny = y + y_add
-        flip_stones = []
-
-        while 0 <= nx < 8 and 0 <= ny < 8 and board[nx][ny] == enemy_stone:
-            flip_stones.append((nx, ny))
-            nx += x_add
-            ny += y_add
-
-        if (
-            0 <= nx < 8
-            and 0 <= ny < 8
-            and board[nx][ny] == player_stone
-            and len(flip_stones) > 0
-        ):
-            return True
+    flippable_stones_all_directions = find_flippable_stones(
+        x, y, board, player_stone, enemy_stone
+    )
+    return any(flippable_stones_all_directions)
 
 
 def validation(x, y, board):
