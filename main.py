@@ -1,8 +1,8 @@
 import random
 
 
-def find_flippable_stones(x, y, board, player_stone, enemy_stone):
-    flippable_stones_all_directions = []
+def find_reversible_stones(x, y, board, player_stone, enemy_stone):
+    reversible_stones_all_directions = []
     directions = [
         (0, 1),
         (0, -1),
@@ -24,24 +24,24 @@ def find_flippable_stones(x, y, board, player_stone, enemy_stone):
             ny += y_add
 
         if 0 <= nx < 8 and 0 <= ny < 8 and board[nx][ny] == player_stone:
-            flippable_stones_all_directions.append(flip_stones)
-    return flippable_stones_all_directions
+            reversible_stones_all_directions.append(flip_stones)
+    return reversible_stones_all_directions
 
 
 def reverse_stone(x, y, board, player_stone, enemy_stone):
-    flippable_stones_all_directions = find_flippable_stones(
+    reversible_stones_all_directions = find_reversible_stones(
         x, y, board, player_stone, enemy_stone
     )
-    for flip_stones in flippable_stones_all_directions:
+    for flip_stones in reversible_stones_all_directions:
         for x_flip, y_flip in flip_stones:
             board[x_flip][y_flip] = player_stone
 
 
 def reverse_stone_exist(x, y, board, player_stone, enemy_stone):
-    flippable_stones_all_directions = find_flippable_stones(
+    reversible_stones_all_directions = find_reversible_stones(
         x, y, board, player_stone, enemy_stone
     )
-    return any(flippable_stones_all_directions)
+    return any(reversible_stones_all_directions)
 
 
 def validation(x, y, board):
