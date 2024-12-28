@@ -1,12 +1,6 @@
 import random
 
 
-# 初期化→表示→入力→バリデーション→判定→相手の手→判定→表示
-# の順でやってみる、２次元配列が使えそうなので、適宜しらべつつやる
-#
-
-
-# もっと最適化する
 def find_flippable_stones(x, y, board, player_stone, enemy_stone):
     flippable_stones_all_directions = []
     directions = [
@@ -54,11 +48,9 @@ def validation(x, y, board):
     if x < 0 or x > 7 or y < 0 or y > 7:
         print("error1: out of range")
         return
-    # x, yの位置に既に石があるかどうかを確認
     elif board[x][y] != "-":
         print("error2: already exists")
         return
-    # x, yのそれぞれプラスマイナス1の位置に石があるかどうかを確認
     elif (
         board[x + 1][y] == "-"
         and board[x - 1][y] == "-"
@@ -74,17 +66,16 @@ def validation(x, y, board):
         return True
 
 
+# 初期化→表示→入力→バリデーション→判定→相手の手→判定→表示
 def main():
-    # 8x8の盤面を作成
+    # 盤面作成、初期配置
     board = [["-" for j in range(8)] for i in range(8)]
-
-    # 初期配置を設定
     board[3][3] = "o"
     board[3][4] = "x"
     board[4][3] = "x"
     board[4][4] = "o"
 
-    # 初期盤面を表示
+    # 初期表示
     print("---------------")
     for i in board:
         print(" ".join(i))
@@ -92,14 +83,13 @@ def main():
     # メインのループはここで
     while True:
 
-        # 手の入力を受付
+        # 手の入力受付
         print("---------------")
         print("input your move separated by space. ↓")
         print("(type exit to quit.)")
         input_str = input()
         if input_str == "exit":
             break
-
         x, y = [int(i) for i in input_str.split()]
 
         # バリデーション
@@ -107,10 +97,10 @@ def main():
             print("Invalid move. Try again.")
             continue
 
-        # 入力された手を適用
+        # 入力手の適用
         board[x][y] = "o"
 
-        # リバーシのルールに従って石を裏返す
+        # 石を裏返す
         reverse_stone(x, y, board, "o", "x")
 
         # 盤面を表示
